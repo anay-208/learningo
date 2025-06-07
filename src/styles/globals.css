@@ -118,6 +118,11 @@
   }
   body {
     background: var(--color-background);
-    @apply text-foreground;
+    background-repeat: no-repeat;
+    @apply text-foreground min-h-screen;
+  }
+  button,
+  [role="button"] {
+    @apply cursor-pointer;
   }
 }

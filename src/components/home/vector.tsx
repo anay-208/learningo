@@ -46,8 +46,8 @@ const SvgIcon = () => {
           y2="64.647"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor={gradientColors.paint0.start} />
-          <stop offset="1" stopColor={gradientColors.paint0.end} />
+          <stop suppressHydrationWarning stopColor={gradientColors.paint0.start} />
+          <stop suppressHydrationWarning offset="1" stopColor={gradientColors.paint0.end} />
         </linearGradient>
         <linearGradient
           id="paint1_linear"
@@ -57,9 +57,9 @@ const SvgIcon = () => {
           y2="-162.127"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor={gradientColors.paint1.start} />
-          <stop offset="0.504" stopColor={gradientColors.paint1.mid} />
-          <stop offset="1" stopColor={gradientColors.paint1.end} />
+          <stop suppressHydrationWarning stopColor={gradientColors.paint1.start} />
+          <stop suppressHydrationWarning offset="0.504" stopColor={gradientColors.paint1.mid} />
+          <stop suppressHydrationWarning offset="1" stopColor={gradientColors.paint1.end} />
         </linearGradient>
         <linearGradient
           id="paint2_linear"
@@ -69,9 +69,9 @@ const SvgIcon = () => {
           y2="120"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor={gradientColors.paint2.start} />
-          <stop offset="0.504" stopColor={gradientColors.paint2.mid} />
-          <stop offset="1" stopColor={gradientColors.paint2.end} />
+          <stop suppressHydrationWarning stopColor={gradientColors.paint2.start} />
+          <stop suppressHydrationWarning offset="0.504" stopColor={gradientColors.paint2.mid} />
+          <stop suppressHydrationWarning offset="1" stopColor={gradientColors.paint2.end} />
         </linearGradient>
         <filter
           id="filter0_f"
