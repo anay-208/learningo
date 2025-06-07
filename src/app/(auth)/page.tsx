@@ -2,6 +2,7 @@
 
 export default function Auth(){
     return (
-        <>Auth</>
+        <>
+        <h1>auth</h1></>
     )
 }
