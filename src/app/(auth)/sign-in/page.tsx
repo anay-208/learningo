@@ -1,17 +1,16 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription  } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { Loader2, Key } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
 

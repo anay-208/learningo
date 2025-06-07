@@ -1,5 +1,5 @@
 "use server";
-import { generateObject, generateText } from "ai"
+import { generateObject } from "ai"
 import { google } from "@ai-sdk/google"
 import { z  } from "zod";
 import { db } from "@/db";
@@ -64,7 +64,7 @@ export async function generateLessons(prompt: string){
     }).returning({id: courseTable.id})
 
     await db.insert(lessonTable).values(
-        object.lessons.map((lesson: any) => ({
+        object.lessons.map((lesson) => ({
             title: lesson.name,
             description: lesson.description,
             userId: session.user.id,

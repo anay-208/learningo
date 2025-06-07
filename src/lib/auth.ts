@@ -12,7 +12,7 @@ export const auth = betterAuth({
     }),
     plugins: [
         magicLink({
-            sendMagicLink: async ({ email, url, }, request) => {
+            sendMagicLink: async ({ email, url, }) => {
                 console.log(email, url)
                 const { data, error } = await resend.emails.send({
                     from: "Learningo <learningo@anayparaswani.dev>",

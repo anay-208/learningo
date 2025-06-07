@@ -25,7 +25,7 @@ export default async function Home() {
   if (lessons.length === 0) {
     return ( 
       <>
-      <h1>You've got an extremely rare error. Please connect me at me@anayparaswani.dev to get this resolved.</h1>
+      <h1>You&apos;ve got an extremely rare error. Please connect me at me@anayparaswani.dev to get this resolved.</h1>
       </>
     )
   }
