@@ -25,7 +25,7 @@ export default function Questions(props: Props) {
         } else {
             setQuestions((prev) => [...prev, question]);
         }
-    }, []);
+    }, [props.questions.length, questions.length]);
 
     const queryClient = new QueryClient()
 
