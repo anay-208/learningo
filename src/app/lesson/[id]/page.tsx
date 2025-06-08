@@ -41,7 +41,6 @@ export default async function Lesson({
         orderBy: (questions, { asc }) => asc(questions.questionNo)
     })
 
-    console.log(questions)
     if(questions.length === 0){
         await db.update(lessonTable).set({
             questionsGenerated: false,
@@ -53,7 +52,7 @@ export default async function Lesson({
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
-            <Questions questions={questions} />
+            <Questions questions={questions} id={id} />
         </div>
     );
 }

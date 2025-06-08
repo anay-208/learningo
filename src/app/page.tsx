@@ -33,7 +33,7 @@ export default async function Home() {
 
   return (
     <>
-      <div className="space-y-8 relative w-screen min-h-screen">
+      <div className="space-y-8 relative w-screen min-h-screen pt-24">
         <main className="max-w-xl mx-auto space-y-8">
           <div>
           <h2 className="text-2xl">{course.title}</h2>
@@ -46,6 +46,7 @@ export default async function Home() {
                 id={lesson.id}
                 title={lesson.title} 
                 description={lesson.description} 
+                completed={lesson.completed}
               />
             ))}
 

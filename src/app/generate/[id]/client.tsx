@@ -1,7 +1,9 @@
 "use client";
 import { generateQuestions } from '@/actions/generate';
+import { buttonVariants } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
 export  default function Client({id}: {id: string}) {
     const queryClient = new QueryClient();
@@ -26,7 +28,7 @@ function Content({ id }: { id: string }) {
                 <>
                     <h1 className="text-4xl font-bold">Generating Lessons</h1>
                     <p className="text-xl text-center">Hang tight, your lessons are being generated</p>
-                    <div className="w-12 h-12 border-4 border-white border-b-transparent rounded-full animate-spin"></div>
+                    <Loader2 className="size-12 animate-spin" />
                 </>
             ) : (
                 <>
@@ -35,7 +37,7 @@ function Content({ id }: { id: string }) {
                         <div className="text-center space-y-4">
                             <h2 className="text-3xl font-semibold">Lessons Generated</h2>
                             <p className="text-lg">Lessons have been generated successfully!</p>
-                            <Link href={`/lesson/${id}`}>
+                            <Link href={`/lesson/${id}`} className={buttonVariants({variant: "default", size: "lg"})}>
                                 Go to Lesson
                             </Link>
                         </div>

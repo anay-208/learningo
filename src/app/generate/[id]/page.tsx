@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { redirect, unauthorized } from "next/navigation";
+import { redirect } from "next/navigation";
 import Client from "./client";
 
 

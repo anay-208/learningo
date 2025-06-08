@@ -9,7 +9,6 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 
-const model = google('gemini-1.5-flash');
 
 const schemaLessons = z.object({
     name: z.string().min(1, "Name is required"),
@@ -33,7 +32,7 @@ export async function generateLessons(prompt: string){
     }
 
     const response = await generateObject({
-        model,
+        model: google("gemini-2.0-flash"),
         schema: schemaLessons,
         prompt: `
         You are an expert in creating educational test.
@@ -127,7 +126,7 @@ export async function generateQuestions(id: string){
     }
 
     const response = await generateObject({
-        model,
+        model: google("gemini-2.5-flash-preview-04-17"),
         schema: schemaQuestions,
         prompt: `
         You are an expert in creating educational test.
@@ -138,7 +137,7 @@ export async function generateQuestions(id: string){
         - Have 2-4 answer choices, which needs to be as short as possible
         - Have 1 correct answer
         Make sure the question is clear and concise, and the answer choices are distinct and relevant.
-        For Answer Choice, it needs to be between 0 & 3
+        For Answer Choice, it needs to be between 0 & 3, so 0 Refers to first item in the array, and 1 would refer to 2nd and so on.
         You've to generate multiple question, at least 5 and at most 15 questions, but preferably around 10 questions only.
         Options should be at most 50 characters, but preferably less
         `
