@@ -31,6 +31,15 @@ export async function generateLessons(prompt: string){
         }
     }
 
+    const courseExists = await db.query.courseTable.findFirst({
+        where: (table, { eq, and }) => and(eq(table.userId, session.user.id)),
+    })
+    if(courseExists) {
+        return {
+            error: "You can only create one course right now. Please contact me@anayparaswani.dev to be able to create more courses."
+        }
+    }
+
     const response = await generateObject({
         model: google("gemini-2.0-flash"),
         schema: schemaLessons,
@@ -80,7 +89,7 @@ export async function generateLessons(prompt: string){
 
 
 
-    return response.object
+    return { success: true}
 }
 
 // For ai

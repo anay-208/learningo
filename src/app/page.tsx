@@ -33,13 +33,13 @@ export default async function Home() {
 
   return (
     <>
-      <div className="space-y-8 relative w-screen min-h-screen pt-24">
+      <div className="space-y-8 relative w-screen min-h-screen py-24">
         <main className="max-w-xl mx-auto space-y-8">
           <div>
           <h2 className="text-2xl">{course.title}</h2>
           <p className="text-md">{course.description}</p>
           </div>
-          <div className="flex flex-col items-center justify-center gap-8">
+          <div className="flex flex-col items-center justify-center gap-6">
             {lessons.map((lesson) => (
               <LessonCard 
                 key={lesson.id} 
@@ -54,6 +54,12 @@ export default async function Home() {
 
           </div>
         </main>
+        <footer className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-100 dark:from-gray-900 to-transparent h-18">
+          <div className="max-w-xl mx-auto text-center text-gray-500">
+            <p className="text-sm">Crafted with ❤️ by Anay Paraswani</p>
+          </div>
+
+        </footer>
       </div>
     </>
   );

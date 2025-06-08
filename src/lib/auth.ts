@@ -23,5 +23,16 @@ export const auth = betterAuth({
                 console.log(data, error)
             }
         })
-    ]
+    ],
+    user: {
+        additionalFields: {
+            streak: {
+                type: "number",
+                defaultValue: "0",
+            },
+            lastPracticed: {
+                type: "date",
+            }
+        }
+    }
 })

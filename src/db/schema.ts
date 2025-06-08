@@ -1,16 +1,19 @@
 import { sql } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean, integer, uuid } from "drizzle-orm/pg-core";
 
-// User Table
+// user table
 export const user = pgTable("user", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  emailVerified: boolean("email_verified").$defaultFn(() => false).notNull(),
-  image: text("image"),
-  createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull(),
-  updatedAt: timestamp("updated_at").$defaultFn(() => new Date()).notNull()
+  id: text('id').primaryKey(),
+  name: text('name').notNull(),
+  email: text('email').notNull().unique(),
+  emailVerified: boolean('email_verified').$defaultFn(() => false).notNull(),
+  image: text('image'),
+  createdAt: timestamp('created_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull(),
+  updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull(),
+  streak: integer('streak').default(0),
+  lastPracticed: timestamp('last_practiced')
 });
+
 
 // Course Table
 export const courseTable = pgTable("course", {

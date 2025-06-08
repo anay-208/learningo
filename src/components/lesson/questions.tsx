@@ -35,7 +35,9 @@ export default function Questions(props: Props) {
                             <ReviewMistakes continueR={helpers.goToNextStep} /> :
                             <Question question={questions[currentStep - 1]} helpers={helpers} noOfQuestions={props.questions.length} addQuestion={addQuestion} /> :
                         <Completed id={props.id} />
+                        
                 }
+
 
             </div>
         </QueryClientProvider>
