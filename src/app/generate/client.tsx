@@ -27,7 +27,7 @@ export default function Client() {
             toast("An unknown error occured, please contact me@anayparaswani.dev!")
 
         })
-    }, [prompt])
+    }, [prompt, router])
     return (
         <>
             <main className="flex flex-col items-center justify-center min-h-screen space-y-4">

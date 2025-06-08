@@ -1,6 +1,4 @@
-import { db } from "@/db";
 import { ModeToggle } from "./mode-toggle";
-import StreakDropdown from "./streak-dropdown";
 
 export default function Header() {
     return (

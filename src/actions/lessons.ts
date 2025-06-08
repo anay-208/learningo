@@ -13,7 +13,7 @@ export const markLessonAsCompleted = async (lessonId: string) => {
         return { success: false, message: "Unauthorized" };
     }
 
-    const result = await db.update(lessonTable)
+    await db.update(lessonTable)
         .set({ completed: true })
         .where(and(eq(lessonTable.id, lessonId), eq(lessonTable.userId, session.user.id)));
 
