@@ -7,6 +7,7 @@ import MagicLinkHTML from "@/emails/magic-link";
 const resend = new Resend(process.env.RESEND_API_KEY!);
 
 export const auth = betterAuth({
+    trustedOrigins: ["https://www.learningo.xyz", "https://learningo.xyz"],
     database: drizzleAdapter(db, {
         provider: "pg", // or "mysql", "sqlite"
     }),
