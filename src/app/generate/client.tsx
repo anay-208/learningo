@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { useCallback, useState } from "react";
 import { generateLessons } from "@/actions/generate"
+import { Sparkles } from "lucide-react";
 export default function Client() {
     const [prompt, setPrompt] = useState("");
     const onClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
@@ -10,9 +11,9 @@ export default function Client() {
     }, [prompt])
     return (
         <>
-        <main className="flex flex-col items-center justify-center min-h-screen">
+        <main className="flex flex-col items-center justify-center min-h-screen space-y-4">
             <h1 className="text-7xl text-center mx-2"> What do you want to learn? </h1>
-            <form className="mt-8 w-full max-w-2xl text-center space-y-4">
+            <form className="mt-8 w-full max-w-2xl text-center space-y-6">
                 <textarea 
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
@@ -23,9 +24,10 @@ export default function Client() {
                 onClick={onClick}
                     type="submit" 
                     size={"lg"}
-                    className="text-xl"
+                    className="text-2xl p-6 bg-purple-600 hover:bg-purple-700 text-white"
                 >
-                    Submit
+                    Generate 
+                    <Sparkles className="h-10 w-10" />
                 </Button>
             </form>
         </main>

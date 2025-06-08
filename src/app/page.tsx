@@ -1,7 +1,5 @@
 import { auth } from "@/lib/auth";
 import LessonCard from "@/components/home/lesson-card";
-import SvgIcon from "@/components/home/vector";
-import { ModeToggle } from "@/components/mode-toggle";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
@@ -21,6 +19,7 @@ export default async function Home() {
   }
   const lessons = await db.query.lessonTable.findMany({
     where: (lessons, { eq }) => eq(lessons.courseId, course.id),
+    orderBy: (lessons, { asc }) => asc(lessons.lessonNo),
   })
   if (lessons.length === 0) {
     return ( 
@@ -31,15 +30,10 @@ export default async function Home() {
   }
 
 
+
   return (
     <>
       <div className="space-y-8 relative w-screen min-h-screen">
-        <SvgIcon />
-        {/* Header: Title, Streak & Toggler */}
-        <header className="px-4 py-4 flex justify-between ">
-          <h1 className="text-3xl">Learningo</h1>
-          <ModeToggle />
-        </header>
         <main className="max-w-xl mx-auto space-y-8">
           <div>
           <h2 className="text-2xl">{course.title}</h2>
@@ -49,6 +43,7 @@ export default async function Home() {
             {lessons.map((lesson) => (
               <LessonCard 
                 key={lesson.id} 
+                id={lesson.id}
                 title={lesson.title} 
                 description={lesson.description} 
               />

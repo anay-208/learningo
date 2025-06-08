@@ -1,16 +1,20 @@
+"use client";
 import { ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 
 
 interface Props {
   title: string;
   description: string;
+  id: string;
 }
 
-export default function LessonCard({ title, description }: Props){
+export default function LessonCard({ title, description, id }: Props){
+  const router = useRouter();
     return (
         <>
-        <article className="w-full mx-4 py-2 px-4 max-w-xl rounded-lg border flex items-center justify-between transition duration-300 bg-foreground/5 hover:bg-foreground/10 group" role="button">
+        <article onClick={() => router.push(`/lesson/${id}`)} className="w-full mx-4 py-2 px-4 max-w-xl rounded-lg border flex items-center justify-between transition duration-300 bg-foreground/5 hover:bg-foreground/10 group" role="button">
             {/* Text */}
             <div>
               <h2 className="text-2xl">{title}</h2>

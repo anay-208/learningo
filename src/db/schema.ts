@@ -30,6 +30,7 @@ export const lessonTable = pgTable("lesson", {
   userId: text("user_id").notNull().references(() => user.id, { onDelete: "cascade" }),
   questionsGenerated: boolean("questions_generated").$defaultFn(() => false).notNull(),
   completed: boolean("completed").$defaultFn(() => false).notNull(),
+  lessonNo: integer("lesson_no").notNull(),
   courseId: uuid("course_id").notNull().references(() => courseTable.id, { onDelete: "cascade" }),
   createdAt: timestamp("created_at").$defaultFn(() => new Date()).notNull()
 });
@@ -37,6 +38,7 @@ export const lessonTable = pgTable("lesson", {
 // Questions Table
 export const questionsTable = pgTable("questions", {
   id: uuid("id").primaryKey().defaultRandom(),
+  questionNo: integer("question_number").notNull(),
   question: text("question").notNull(),
   answerChoices: text("answer_choices").array().notNull().default(sql`array[]::text[]`),
   answer: integer("answer").notNull(),

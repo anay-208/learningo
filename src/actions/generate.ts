@@ -3,13 +3,15 @@ import { generateObject } from "ai"
 import { google } from "@ai-sdk/google"
 import { z  } from "zod";
 import { db } from "@/db";
-import { courseTable, lessonTable } from "@/db/schema";
+import { courseTable, lessonTable, questionsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 
 const model = google('gemini-1.5-flash');
 
-const schema = z.object({
+const schemaLessons = z.object({
     name: z.string().min(1, "Name is required"),
     description: z.string().min(1, "Description is required").max(100, "Description must be brief and less than 100 characters"),
     lessons: z.array(z.object({
@@ -32,7 +34,7 @@ export async function generateLessons(prompt: string){
 
     const response = await generateObject({
         model,
-        schema,
+        schema: schemaLessons,
         prompt: `
         You are an expert in creating educational test.
         So Now, You've to create a test on the following: ${prompt}
@@ -64,13 +66,14 @@ export async function generateLessons(prompt: string){
     }).returning({id: courseTable.id})
 
     await db.insert(lessonTable).values(
-        object.lessons.map((lesson) => ({
+        object.lessons.map((lesson, i) => ({
             title: lesson.name,
             description: lesson.description,
             userId: session.user.id,
-            courseId: course[0].id, // Assuming the course ID is returned in the object
-            questionsGenerated: false, // Initial state
-            completed: false, // Initial state
+            courseId: course[0].id, 
+            questionsGenerated: false,
+            completed: false,
+            lessonNo: i + 1
         }))
     )
 
@@ -79,4 +82,85 @@ export async function generateLessons(prompt: string){
 
 
     return response.object
+}
+
+// For ai
+const schemaQuestions = z.array(z.object({
+    question: z.string().min(1, "Question is required"),
+    options: z.array(z.string().min(1, "An option is required").max(50, "Option should be less than 50 characters")).min(2, "At least 2 options are required").max(4, "A maximum of 4 options is allowed"),
+    answer: z.number().min(0, "Answer is required").max(3, "Answer must be between 1 and 4")
+}))
+
+
+export async function generateQuestions(id: string){
+    const session = await auth.api.getSession({
+        headers: await headers()
+    })
+    if(!session) {
+        return {
+            error: "You must be signed in to generate questions"
+        }
+    }
+
+    const lesson = await db.query.lessonTable.findFirst({
+        where: (table, { eq, and }) => and(eq(table.id, id), eq(table.userId, session.user.id)),
+    })
+
+
+    if(!lesson) {
+        return {
+            error: "Lesson not found"
+        }
+    }
+    if(lesson.questionsGenerated) {
+        redirect(`/lesson/${id}/questions`)
+    }
+
+    const course = await db.query.courseTable.findFirst({
+        where: (table, { eq, and }) => and(eq(table.id, lesson.courseId), eq(table.userId, session.user.id)),
+    })
+
+    if(!course) {
+        return {
+            error: "You've encountered a very rare error, please contact me@anayparaswani.dev!"
+        }
+    }
+
+    const response = await generateObject({
+        model,
+        schema: schemaQuestions,
+        prompt: `
+        You are an expert in creating educational test.
+        You've to create questions on topic for course: ${course.title}, and description: ${course.description}.
+        So Now, You've to create a question on the following topic: ${lesson.title}, and description: ${lesson.description}
+        The question will:
+        - Have a question
+        - Have 2-4 answer choices, which needs to be as short as possible
+        - Have 1 correct answer
+        Make sure the question is clear and concise, and the answer choices are distinct and relevant.
+        For Answer Choice, it needs to be between 0 & 3
+        You've to generate multiple question, at least 5 and at most 15 questions, but preferably around 10 questions only.
+        Options should be at most 50 characters, but preferably less
+        `
+    })
+    const { object } = response;
+
+    const insertPromise = await db.insert(questionsTable).values(
+        object.map((question, i) => ({
+            question: question.question,
+            answerChoices: question.options,
+            answer: question.answer,
+            userId: session.user.id,
+            lessonId: lesson.id,
+            questionNo: i + 1
+        })))
+
+    const completePromise = await db.update(lessonTable).set({
+        questionsGenerated: true,
+    }).where(eq(lessonTable.id, lesson.id))
+
+    await Promise.all([insertPromise, completePromise])
+    return {
+        success: true
+    }
 }
