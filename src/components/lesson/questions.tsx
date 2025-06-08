@@ -19,11 +19,12 @@ export default function Questions(props: Props) {
     const [currentStep, helpers] = useStep(questions.length + 1);
 
     const addQuestion = useCallback((question: QuestionType) => {
-        if(questions.length === props.questions.length){
+        if (questions.length === props.questions.length) {
             // Add it twice since it won't be displayed the first time, because there would be review mistakes screen
-            setQuestions((prev)=> [...prev, question, question])
+            setQuestions((prev) => [...prev, question, question])
+        } else {
+            setQuestions((prev) => [...prev, question]);
         }
-        setQuestions((prev) => [...prev, question]);
     }, []);
 
     const queryClient = new QueryClient()
