@@ -15,7 +15,7 @@ const schemaLessons = z.object({
     description: z.string().min(1, "Description is required").max(100, "Description must be brief and less than 100 characters"),
     lessons: z.array(z.object({
         name: z.string().min(1, "Name is required"),
-        description: z.string().min(1, "Description is required").max(50, "Description must be brief and less than 50 characters")
+        description: z.string().min(1, "Description is required").max(60, "Description must be brief and less than 50 characters") // max 60 incase Ai exceeds by a little
     })).min(1, "1 lesson minimum").max(15, "You can only create up to 15 lessons at a time")
 }).or(z.object({
     error: z.string()
@@ -58,6 +58,7 @@ export async function generateLessons(prompt: string){
         Make sure Description is as brief as possible, and for:
         - courses: Description should be less than 100 characters, but It should be around 50-70 characters preferably.
         - lessons: Description should just state the syllabus of the lesson, less than 50 characters, but It should be around 30-40 characters preferably.
+        DONT EXCEED THE LIMIT NO MATTER WHAT, and RESPONSE SHOULD MATCH THE SCHEMA
         `
     })
 
@@ -148,7 +149,9 @@ export async function generateQuestions(id: string){
         Make sure the question is clear and concise, and the answer choices are distinct and relevant.
         For Answer Choice, it needs to be between 0 & 3, so 0 Refers to first item in the array, and 1 would refer to 2nd and so on.
         You've to generate multiple question, at least 5 and at most 15 questions, but preferably around 10 questions only.
-        Options should be at most 50 characters, but preferably less
+        Options should be at most 50 characters, but preferably less, DONT EXCEED THE LIMIT NO MATTER WHAT, and RESPONSE SHOULD MATCH THE SCHEMA
+
+        New Update to Instruction: Only Generate around 5 Lessons.
         `
     })
     const { object } = response;

@@ -49,7 +49,7 @@ export default function QuestionComponent({ question, helpers: {goToNextStep }, 
     };
 
     return (
-        <div className="shadow-md h-[100dvh] py-8 relative w-full overflow-hidden">
+        <div className="shadow-md h-[100dvh] py-8 relative w-full overflow-hidden ">
             <div className='space-y-4'>
                 <h1 className="text-3xl font-bold text-center">Question {question.questionNo}</h1>
                 <h2 className="text-3xl font-bold text-center">{question.question}</h2>
