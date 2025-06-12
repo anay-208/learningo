@@ -1,36 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+## Inspiration
 
-First, run the development server:
+As a high school student, One of my struggles is last minute revision. Thinking about this Problem, I developed a solution for it.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+I've noticed similar apps, but I've noticed they're like $5-10/mo, which is a lot in India considering I'm a student. I realized if I develop the app myself, it would cost me <$1 in AI Costs(For my personal use), if I exceed the free tier.
+## What it does
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The Web App, Powered by Gemini Generates Lessons & Questions based on your topic, and helps you revise with MCQ Questions.
+## How I built it
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+I Used Next.js, which is a React.js framework to build it. How it works is when you go to sign-in route, It is using Magic links for authentication, powered by better-auth0, and uses resend1 to send the email. After verification, you'll be signed in, where you can generate a lesson. When you generate a lesson, it is using the Vercel's AI SDK2 to generate Lessons with Gemini API3 which'll then display in the Home Page. You can click any lesson on Home page, and once you click, It'll generate Questions using the same way, and then you can practice.
+## What's next for Learningo
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+As of now, the app will remain completely free.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+In the future however, things might change a little, incase I exceed my Gemini Free Limit.
