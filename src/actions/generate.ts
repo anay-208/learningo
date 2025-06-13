@@ -12,10 +12,10 @@ import { eq } from "drizzle-orm";
 
 const schemaLessons = z.object({
     name: z.string().min(1, "Name is required"),
-    description: z.string().min(1, "Description is required").max(100, "Description must be brief and less than 100 characters"),
+    description: z.string().min(1, "Description is required").max(150, "Description must be brief and less than 100 characters"),
     lessons: z.array(z.object({
-        name: z.string().min(1, "Name is required"),
-        description: z.string().min(1, "Description is required").max(60, "Description must be brief and less than 50 characters") // max 60 incase Ai exceeds by a little
+        name: z.string().min(1, "Name is required"), //temporaily increased max
+        description: z.string().min(1, "Description is required").max(100, "Description must be brief and less than 50 characters") // max 60 incase Ai exceeds by a little
     })).min(1, "1 lesson minimum").max(15, "You can only create up to 15 lessons at a time")
 }).or(z.object({
     error: z.string()
@@ -44,7 +44,7 @@ export async function generateLessons(prompt: string){
         model: google("gemini-2.0-flash"),
         schema: schemaLessons,
         prompt: `
-        You are an expert in creating educational test.
+        You are an expert in creating educational tests.
         So Now, You've to create a test on the following: ${prompt}
         If the prompt is inappropriate, you've to return a error message like "Inappropriate Topic", or "Invalid Topic".
         The test will:
@@ -56,9 +56,10 @@ export async function generateLessons(prompt: string){
         The title shouldn't have the letter "test", it could be similar to "mastering Topic", or something relating to topic only
         You've been provided the context to provide lesson title and description accordingly
         Make sure Description is as brief as possible, and for:
-        - courses: Description should be less than 100 characters, but It should be around 50-70 characters preferably.
-        - lessons: Description should just state the syllabus of the lesson, less than 50 characters, but It should be around 30-40 characters preferably.
-        DONT EXCEED THE LIMIT NO MATTER WHAT, and RESPONSE SHOULD MATCH THE SCHEMA
+
+        Now when you are generating, there are certain limits to the max number of characters.
+        For Description of lesson, so object.description, it should be less than 100 characters, but make it less than 50 characters, and there is some extra space just incase.
+        For each lesson, so object.lessons[i].description, it should be less than 60 characters, but make it less than 30 characters, and there is some extra space just incase.
         `
     })
 
@@ -95,8 +96,8 @@ export async function generateLessons(prompt: string){
 
 // For ai
 const schemaQuestions = z.array(z.object({
-    question: z.string().min(1, "Question is required"),
-    options: z.array(z.string().min(1, "An option is required").max(50, "Option should be less than 50 characters")).min(2, "At least 2 options are required").max(4, "A maximum of 4 options is allowed"),
+    question: z.string().min(1, "Question is required"), // temporarily increased
+    options: z.array(z.string().min(1, "An option is required").max(75, "Option should be less than 50 characters")).min(2, "At least 2 options are required").max(4, "A maximum of 4 options is allowed"),
     answer: z.number().min(0, "Answer is required").max(3, "Answer must be between 1 and 4")
 }))
 
@@ -150,8 +151,7 @@ export async function generateQuestions(id: string){
         For Answer Choice, it needs to be between 0 & 3, so 0 Refers to first item in the array, and 1 would refer to 2nd and so on.
         You've to generate multiple question, at least 5 and at most 15 questions, but preferably around 10 questions only.
         Options should be at most 50 characters, but preferably less, DONT EXCEED THE LIMIT NO MATTER WHAT, and RESPONSE SHOULD MATCH THE SCHEMA
-
-        New Update to Instruction: Only Generate around 5 Lessons.
+        DONT TRY TO EXCEED THE LIMIT AT ANY COSTS
         `
     })
     const { object } = response;

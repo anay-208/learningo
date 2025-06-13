@@ -14,12 +14,12 @@ export default function Client() {
         setLoading(true)
         generateLessons(prompt).then(data => {
             setLoading(false)
-            if("error" in data && data.error){
+            if ("error" in data && data.error) {
                 return toast(data.error)
             }
 
 
-            if("success" in data && data.success){
+            if ("success" in data && data.success) {
                 toast("Lessons generated successfully! Redirecting to your lessons page...");
                 router.push("/")
                 return;
@@ -48,7 +48,7 @@ export default function Client() {
                         disabled={loading}
                     >
                         {loading ? <Loader2 size={24} className="animate-spin" /> : <> <span className="leading-none -mt-1">Generate</span>
-                        <Sparkles className="size-6 animate-pulse text-purple-200" /> </>}
+                            <Sparkles className="size-6 animate-pulse text-purple-200" /> </>}
                     </Button>
 
                 </form>
