@@ -17,7 +17,7 @@ export const auth = betterAuth({
                 console.log(email, url)
                 if(process.env.NODE_ENV === "development") return;
                 const { data, error } = await resend.emails.send({
-                    from: "Learningo <learningo@anayparaswani.dev>",
+                    from: "Unpaid Intern @ Learningo <learningo@anayparaswani.dev>",
                     to: email,
                     subject: "Your Magic Link to login to Learningo",
                     html: MagicLinkHTML.replaceAll("{{URL}}", url), 
