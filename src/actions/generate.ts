@@ -8,6 +8,8 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 
 const schemaLessons = z.object({
@@ -31,12 +33,25 @@ export async function generateLessons(prompt: string){
         }
     }
 
-    const courseExists = await db.query.courseTable.findFirst({
-        where: (table, { eq, and }) => and(eq(table.userId, session.user.id)),
-    })
-    if(courseExists) {
+    // Upstash rate limit: 5 course creations per day per user
+    const ratelimit = new Ratelimit({
+        redis: Redis.fromEnv(),
+        limiter: Ratelimit.slidingWindow(5, "1d"),
+        analytics: true,
+    });
+    const { success, reset, remaining } = await ratelimit.limit(`course_create_${session.user.id}`);
+    if (!success) {
         return {
-            error: "You can only create one course right now. Please contact me@anayparaswani.dev to be able to create more courses."
+            error: `You can only create up to 5 courses per day. Please try again after ${new Date(reset * 1000).toLocaleTimeString('en-GB', { timeZone: 'UTC' })} GMT or contact me@anayparaswani.dev.`
+        }
+    }
+
+    const courseCount = await db.query.courseTable.findMany({
+        where: (table, { eq }) => eq(table.userId, session.user.id),
+    });
+    if (courseCount.length >= 5) {
+        return {
+            error: "You can only create up to 5 courses. Please contact me@anayparaswani.dev to be able to create more courses."
         }
     }
 
