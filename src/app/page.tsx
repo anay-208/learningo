@@ -1,66 +1,22 @@
-import { auth } from "@/lib/auth";
-import LessonCard from "@/components/home/lesson-card";
-import { headers } from "next/headers";
-import { redirect } from "next/navigation";
-import { db } from "@/db";
-
-export default async function Home() {
-  const session = await auth.api.getSession({
-    headers: await headers()
-  })
-  if (!session) {
-    redirect("/sign-in")
-  }
-  const course = await db.query.courseTable.findFirst({
-    where: (courses, { eq }) => eq(courses.userId, session.user.id),
-  })
-  if (!course) {
-    redirect("/generate")
-  }
-  const lessons = await db.query.lessonTable.findMany({
-    where: (lessons, { eq }) => eq(lessons.courseId, course.id),
-    orderBy: (lessons, { asc }) => asc(lessons.lessonNo),
-  })
-  if (lessons.length === 0) {
-    return ( 
-      <>
-      <h1>You&apos;ve got an extremely rare error. Please connect me at me@anayparaswani.dev to get this resolved.</h1>
-      </>
-    )
-  }
-
-
-
+export default function LandingPage() {
   return (
-    <>
-      <div className="space-y-8 relative w-screen min-h-screen py-24">
-        <main className="max-w-xl mx-auto space-y-8">
-          <div>
-          <h2 className="text-2xl">{course.title}</h2>
-          <p className="text-md">{course.description}</p>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-6">
-            {lessons.map((lesson) => (
-              <LessonCard 
-                key={lesson.id} 
-                id={lesson.id}
-                title={lesson.title} 
-                description={lesson.description} 
-                completed={lesson.completed}
-              />
-            ))}
-
-
-
-          </div>
-        </main>
-        <footer className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-gray-100 dark:from-gray-900 to-transparent h-18">
-          <div className="max-w-xl mx-auto text-center text-gray-500">
-            <p className="text-sm">Crafted with ❤️ by Anay Paraswani</p>
-          </div>
-
-        </footer>
-      </div>
-    </>
+    <div className="min-h-screen w-full flex flex-col items-center justify-center px-4 ">
+      <main className="flex flex-col items-center justify-center flex-1 w-full py-24">
+        <h1 className="text-5xl sm:text-7xl font-extrabold text-center mb-6 select-none">
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400">Learningo</span>
+        </h1>
+        <p className="text-xl sm:text-2xl text-center max-w-2xl mb-10 text-gray-700 dark:text-gray-200">
+          The fastest way to revise for your next test. Instantly generate last-minute revision courses and quizzes on any topic. Cram smart, not hard—with AI-powered quick review.
+        </p>
+        <a href="/sign-in">
+          <button className="text-2xl rounded-md px-8 py-4 bg-gradient-to-r from-[#ede9fe] to-[#c7d2fe] hover:from-[#c7d2fe] hover:to-[#a5b4fc] border border-gray-200 shadow-md transition duration-300 ease-in-out focus:outline-none focus:ring-4 focus:ring-purple-200/60 flex items-center gap-2 font-semibold">
+            <span className="text-black font-bold">Start Revising</span>
+          </button>
+        </a>
+      </main>
+      <footer className="w-full text-center text-gray-500 py-4">
+        <p className="text-sm">Crafted with ❤️ by Anay Paraswani</p>
+      </footer>
+    </div>
   );
 }
