@@ -39,7 +39,7 @@ export async function generateLessons(prompt: string){
         limiter: Ratelimit.slidingWindow(5, "1d"),
         analytics: true,
     });
-    const { success, reset, remaining } = await ratelimit.limit(`course_create_${session.user.id}`);
+    const { success, reset } = await ratelimit.limit(`course_create_${session.user.id}`);
     if (!success) {
         return {
             error: `You can only create up to 5 courses per day. Please try again after ${new Date(reset * 1000).toLocaleTimeString('en-GB', { timeZone: 'UTC' })} GMT or contact me@anayparaswani.dev.`
