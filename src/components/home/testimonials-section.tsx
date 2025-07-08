@@ -11,7 +11,7 @@ export default function TestimonialsSection() {
           <span className="text-sm text-muted-foreground">Founder & Developer, Student at JPIS</span>
         </div>
         <p className="text-xs text-muted-foreground text-center mt-4">
-          If you'd like to share your experience with Learningo, feel free to email your testimonial to <a href="mailto:me@anayparaswani.dev" className="underline">me@anayparaswani.dev</a>!
+          If you&apos;d like to share your experience with Learningo, feel free to email your testimonial to <a href="mailto:me@anayparaswani.dev" className="underline">me@anayparaswani.dev</a>!
         </p>
       </div>
     </section>
