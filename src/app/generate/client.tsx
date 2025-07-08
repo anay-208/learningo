@@ -20,11 +20,11 @@ export default function Client() {
             }
             if ("success" in data && data.success) {
                 toast("Lessons generated successfully! Redirecting to your lessons page...");
-                router.push("/")
+                router.push(`/dashboard/${data.id}`)
                 return;
             }
             toast("An unknown error occured, please contact me@anayparaswani.dev!")
-        })
+        }) 
     }, [prompt, router])
     return (
         <>

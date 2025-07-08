@@ -10,7 +10,8 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 interface Props {
     questions: QuestionType[]
-    id: string
+    id: string;
+    lessonId: string;
 }
 
 
@@ -68,7 +69,7 @@ export default function Questions(props: Props) {
                                 transition={{ duration: 0.25 }}
                                 className='w-full'
                             >
-                                <Completed id={props.id} />
+                                <Completed id={props.id} lessonId={props.lessonId} />
                             </motion.div>
                         )
                     }

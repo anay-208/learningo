@@ -4,15 +4,16 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
 
-export default async function CoursePage({ params }: { params: { id: string } }) {
+export default async function CoursePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth.api.getSession({
     headers: await headers()
   })
   if (!session) {
     redirect("/sign-in")
   }
+  const paramsObj = await params;
   const course = await db.query.courseTable.findFirst({
-    where: (courses, { eq, and }) => and(eq(courses.id, params.id), eq(courses.userId, session.user.id)),
+    where: (courses, { eq, and }) => and(eq(courses.id, paramsObj.id), eq(courses.userId, session.user.id)),
   })
   if (!course) {
     redirect("/")

@@ -31,11 +31,11 @@ export async function generateLessons(prompt: string){
         return {
             error: "You must be signed in to generate lessons"
         }
-    }
+    } 
 
     // Upstash rate limit: 5 course creations per day per user
     const ratelimit = new Ratelimit({
-        redis: Redis.fromEnv(),
+        redis: Redis.fromEnv(), 
         limiter: Ratelimit.slidingWindow(5, "1d"),
         analytics: true,
     });
@@ -76,7 +76,17 @@ export async function generateLessons(prompt: string){
         For Description of lesson, so object.description, it should be less than 100 characters, but make it less than 50 characters, and there is some extra space just incase.
         For each lesson, so object.lessons[i].description, it should be less than 60 characters, but make it less than 30 characters, and there is some extra space just incase.
         `
+    }).catch(err => {
+        console.log(err)
+        console.log("--- raw error end ---")
     })
+
+    if(!response ){
+        return {
+            error: "An unknown error occured, which is likely caused due to high demand on the AI Model. Please try again later or contact me@anayparaswani.dev"
+        }
+    }
+
 
 
     const { object } = response;
@@ -106,7 +116,7 @@ export async function generateLessons(prompt: string){
 
 
 
-    return { success: true}
+    return { success: true, id: course[0].id}
 }
 
 // For ai

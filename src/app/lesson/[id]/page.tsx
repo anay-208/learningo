@@ -52,7 +52,7 @@ export default async function Lesson({
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
-            <Questions questions={questions} id={id} />
+            <Questions questions={questions} id={id} lessonId={lesson.courseId} />
         </div>
     );
 }
