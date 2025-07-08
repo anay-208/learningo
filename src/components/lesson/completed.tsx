@@ -25,7 +25,7 @@ export default function Completed({id, lessonId}: {id: string; lessonId: string;
         } else {
             toast("An unknown error occured marking completed, please contact me@anayparaswani.dev");
         }
-    }, [isPending, data, router]);
+    }, [isPending, data, router, lessonId]);
 
     return (
         <div className="flex flex-col items-center justify-center h-screen">
