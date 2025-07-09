@@ -13,11 +13,11 @@ export default function Completed({id, lessonId}: {id: string; lessonId: string;
     });
 
     useEffect(() => {
-        mutate();
+        mutate();               
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [id]);
 
-    useEffect(() => {
+    useEffect(() => {  
         if(isPending || !data) return;
         if(data.success){
             router.refresh();

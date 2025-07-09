@@ -51,7 +51,7 @@ export async function generateLessons(prompt: string){
     });
     if (courseCount.length >= 5) {
         return {
-            error: "You can only create up to 5 courses. Please contact me@anayparaswani.dev to be able to create more courses."
+            error: "You can only create up to 5 courses. Please delete old courses before creating more."
         }
     }
 
@@ -61,7 +61,7 @@ export async function generateLessons(prompt: string){
         prompt: `
         You are an expert in creating educational tests.
         So Now, You've to create a test on the following: ${prompt}
-        If the prompt is inappropriate, you've to return a error message like "Inappropriate Topic", or "Invalid Topic".
+        If the prompt is inappropriate, you've to return a error message like "Inappropriate Topic", or "Invalid Topic", or anything depending upon context.
         The test will:
         - Have multiple lessons
         - each lesson will have at most 15 questions, but prefer to add around 10 questions only

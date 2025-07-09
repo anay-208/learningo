@@ -18,9 +18,14 @@ export default function LessonCard({ title, description, id, completed }: Props)
     <>
       <article onClick={() => router.push(`/lesson/${id}`)} className={cn("w-full mx-4 py-2 px-4 max-w-xl rounded-lg border flex items-center justify-between transition duration-300 group", completed ? "bg-green-500/5 hover:bg-green-500/10" : "bg-foreground/5 hover:bg-foreground/10")} role="button">
         {/* Text */}
+        <div className="flex">
         <div>
           <h2 className="text-2xl">{title}</h2>
           <p>{description}</p>
+          </div>
+          <div>
+            
+          </div>
         </div>
         {/* Right Arrow Icon */}
         <div className={cn("rounded-full aspect-square size-8 flex justify-center items-center transition duration-300 group-hover:scale-125", completed ? "bg-green-500/10" : "bg-foreground/10")}>

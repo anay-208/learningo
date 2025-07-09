@@ -3,6 +3,7 @@ import LessonCard from "@/components/home/lesson-card";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { db } from "@/db";
+import DropdownIcon from "@/components/home/DropdownIcon";
 
 export default async function CoursePage({ params }: { params: Promise<{ id: string }> }) {
   const session = await auth.api.getSession({
@@ -34,9 +35,14 @@ export default async function CoursePage({ params }: { params: Promise<{ id: str
     <>
       <div className="space-y-8 relative w-screen min-h-screen py-24">
         <main className="max-w-xl mx-auto space-y-8">
-          <div>
-            <h2 className="text-2xl">{course.title}</h2>
-            <p className="text-md">{course.description}</p>
+          <div className="flex justify-between">
+            <div>
+              <h2 className="text-2xl">{course.title}</h2>
+              <p className="text-md">{course.description}</p>
+            </div>
+            <div>
+              <DropdownIcon courseId={course.id} />
+            </div>
           </div>
           <div className="flex flex-col items-center justify-center gap-6">
             {lessons.map((lesson) => (

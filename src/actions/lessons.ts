@@ -1,6 +1,6 @@
 "use server";
 import { db } from "@/db";
-import { lessonTable, user } from "@/db/schema";
+import { courseTable, lessonTable, user } from "@/db/schema";
 import { auth } from "@/lib/auth";
 import { and, eq } from "drizzle-orm";
 import { headers } from "next/headers";
@@ -42,4 +42,11 @@ export const markLessonAsCompleted = async (lessonId: string) => {
 
     return { success: true, message: "Lesson marked as completed" };
 
+}
+
+export const deleteCourse = async (courseId: string) => {
+    await db.delete(courseTable).where(eq(courseTable.id, courseId))
+    return {
+        success: true
+    }
 }
