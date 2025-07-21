@@ -37,11 +37,11 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-        <SvgIcon />
-        <Header />
+          <SvgIcon />
+          <Header />
           {children}
-          <Toaster 
-          position="top-center"
+          <Toaster
+            position="top-center"
           />
         </ThemeProvider>
       </body>
