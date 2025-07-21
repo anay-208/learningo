@@ -1,7 +1,7 @@
 "use server";
 import { generateObject } from "ai"
 import { google } from "@ai-sdk/google"
-import { z  } from "zod";
+import { z } from "zod";
 import { db } from "@/db";
 import { courseTable, lessonTable, questionsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
@@ -11,6 +11,12 @@ import { eq } from "drizzle-orm";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
 
+// Upstash rate limit: 5 course creations per day per user
+const ratelimit = new Ratelimit({
+    redis: Redis.fromEnv(),
+    limiter: Ratelimit.slidingWindow(5, "1d"),
+    analytics: true,
+});
 
 const schemaLessons = z.object({
     name: z.string().min(1, "Name is required"),
@@ -23,26 +29,21 @@ const schemaLessons = z.object({
     error: z.string()
 }))
 
-export async function generateLessons(prompt: string){
+export async function generateLessons(prompt: string) {
     const session = await auth.api.getSession({
         headers: await headers()
     })
-    if(!session) {
+    if (!session) {
         return {
             error: "You must be signed in to generate lessons"
         }
-    } 
+    }
 
-    // Upstash rate limit: 5 course creations per day per user
-    const ratelimit = new Ratelimit({
-        redis: Redis.fromEnv(), 
-        limiter: Ratelimit.slidingWindow(5, "1d"),
-        analytics: true,
-    });
+
     const { success, reset } = await ratelimit.limit(`course_create_${session.user.id}`);
     if (!success) {
         return {
-            error: `You can only create up to 5 courses per day. Please try again after ${new Date(reset * 1000).toLocaleTimeString('en-GB', { timeZone: 'UTC' })} GMT or contact me@anayparaswani.dev.`
+            error: `You can only create up to 5 courses per day(which is inclusive of failed attempts). Please try again after ${new Date(reset * 1000).toLocaleTimeString('en-GB', { timeZone: 'UTC' })} GMT or contact me@anayparaswani.dev.`
         }
     }
 
@@ -61,7 +62,7 @@ export async function generateLessons(prompt: string){
         prompt: `
         You are an expert in creating educational tests.
         So Now, You've to create a test on the following: ${prompt}
-        If the prompt is inappropriate, you've to return a error message like "Inappropriate Topic", or "Invalid Topic", or anything depending upon context.
+        If the prompt is inappropriate, you've to return a error message like "Inappropriate Topic", or perhaps a sarcastic message, if the topic is not appropriate depending upon user's query.
         The test will:
         - Have multiple lessons
         - each lesson will have at most 15 questions, but prefer to add around 10 questions only
@@ -81,7 +82,7 @@ export async function generateLessons(prompt: string){
         console.log("--- raw error end ---")
     })
 
-    if(!response ){
+    if (!response) {
         return {
             error: "An unknown error occured, which is likely caused due to high demand on the AI Model. Please try again later or contact me@anayparaswani.dev"
         }
@@ -90,7 +91,7 @@ export async function generateLessons(prompt: string){
 
 
     const { object } = response;
-    if("error" in object){
+    if ("error" in object) {
         return object
     }
 
@@ -98,14 +99,14 @@ export async function generateLessons(prompt: string){
         title: object.name,
         description: object.description,
         userId: session.user.id
-    }).returning({id: courseTable.id})
+    }).returning({ id: courseTable.id })
 
     await db.insert(lessonTable).values(
         object.lessons.map((lesson, i) => ({
             title: lesson.name,
             description: lesson.description,
             userId: session.user.id,
-            courseId: course[0].id, 
+            courseId: course[0].id,
             questionsGenerated: false,
             completed: false,
             lessonNo: i + 1
@@ -116,7 +117,7 @@ export async function generateLessons(prompt: string){
 
 
 
-    return { success: true, id: course[0].id}
+    return { success: true, id: course[0].id }
 }
 
 // For ai
@@ -127,11 +128,11 @@ const schemaQuestions = z.array(z.object({
 }))
 
 
-export async function generateQuestions(id: string){
+export async function generateQuestions(id: string) {
     const session = await auth.api.getSession({
         headers: await headers()
     })
-    if(!session) {
+    if (!session) {
         return {
             error: "You must be signed in to generate questions"
         }
@@ -142,12 +143,12 @@ export async function generateQuestions(id: string){
     })
 
 
-    if(!lesson) {
+    if (!lesson) {
         return {
             error: "Lesson not found"
         }
     }
-    if(lesson.questionsGenerated) {
+    if (lesson.questionsGenerated) {
         redirect(`/lesson/${id}/questions`)
     }
 
@@ -155,7 +156,7 @@ export async function generateQuestions(id: string){
         where: (table, { eq, and }) => and(eq(table.id, lesson.courseId), eq(table.userId, session.user.id)),
     })
 
-    if(!course) {
+    if (!course) {
         return {
             error: "You've encountered a very rare error, please contact me@anayparaswani.dev!"
         }
