@@ -1,6 +1,6 @@
 "use server";
 import { generateObject } from "ai"
-import { google } from "@ai-sdk/google"
+// import { google } from "@ai-sdk/google"
 import { z } from "zod";
 import { db } from "@/db";
 import { courseTable, lessonTable, questionsTable } from "@/db/schema";
