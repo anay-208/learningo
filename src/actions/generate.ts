@@ -10,6 +10,18 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { Ratelimit } from "@upstash/ratelimit";
 import { Redis } from "@upstash/redis";
+import { createVertex } from '@ai-sdk/google-vertex';
+
+
+const vertex = createVertex({
+    googleAuthOptions: {
+        credentials: {
+            client_email: process.env.GOOGLE_CLIENT_EMAIL,
+            private_key: process.env.GOOGLE_VERTEX_PRIVATE_KEY
+        }
+    }
+  });
+
 
 // Upstash rate limit: 5 course creations per day per user
 const ratelimit = new Ratelimit({
@@ -57,7 +69,7 @@ export async function generateLessons(prompt: string) {
     }
 
     const response = await generateObject({
-        model: google("gemini-2.0-flash"),
+        model: vertex("gemini-2.5-flash"),
         schema: schemaLessons,
         prompt: `
         You are an expert in creating educational tests.
@@ -163,7 +175,7 @@ export async function generateQuestions(id: string) {
     }
 
     const response = await generateObject({
-        model: google("gemini-2.0-flash"),
+        model: vertex("gemini-2.5-flash"),
         schema: schemaQuestions,
         prompt: `
         You are an expert in creating educational test.
