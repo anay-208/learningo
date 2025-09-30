@@ -1,6 +1,5 @@
 "use client";
-import { motion } from "framer-motion";
-import { TrendingUp, Users, BookOpen, Award } from "lucide-react";
+import { TrendingUp, Users, BookOpen } from "lucide-react";
 
 const stats = [
   {
@@ -40,7 +39,7 @@ export default function StatsSection() {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {stats.map((stat, index) => (
+          {stats.map((stat) => (
             <div
               key={stat.label}
               className="group relative hover:-translate-y-2 transition-transform duration-300"

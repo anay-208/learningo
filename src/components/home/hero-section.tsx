@@ -1,7 +1,6 @@
 "use client";
 import { useSession } from "@/lib/auth-client";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowRight, Sparkles, BookOpen, Zap } from "lucide-react";
 
 export default function HeroSection() {

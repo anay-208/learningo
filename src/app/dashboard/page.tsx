@@ -88,7 +88,7 @@ export default async function DashboardPage() {
         {/* Courses Grid */}
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {courses.map((course, index) => (
+            {courses.map((course) => (
               <Link key={course.id} href={`/course/${course.id}`} className="no-underline group">
                 <article className="h-full p-8 rounded-2xl bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200/50 dark:border-gray-800/50 shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 cursor-pointer overflow-hidden relative">
                   {/* Gradient background on hover */}

@@ -129,7 +129,7 @@ export default function Client() {
                     </h3>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-muted-foreground">
                         <div className="p-4 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm">
-                            <strong className="text-gray-900 dark:text-white">Be specific:</strong> Instead of "Math", try "Quadratic equations and solving methods"
+                            <strong className="text-gray-900 dark:text-white">Be specific:</strong> Instead of &ldquo;Math&rdquo;, try &ldquo;Quadratic equations and solving methods&rdquo;
                         </div>
                         <div className="p-4 rounded-xl bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm">
                             <strong className="text-gray-900 dark:text-white">Include context:</strong> Mention your level (beginner, intermediate, advanced)

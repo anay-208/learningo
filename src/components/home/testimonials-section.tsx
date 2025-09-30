@@ -22,10 +22,10 @@ export default function TestimonialsSection() {
               ))}
             </div>
             <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg leading-relaxed">
-              "I created Learningo because I believe learning should be accessible, engaging, and completely free. 
+              &ldquo;I created Learningo because I believe learning should be accessible, engaging, and completely free. 
               As a developer and student myself, I wanted to build something that could help anyone generate 
               custom quizzes and practice materials without any barriers. This is just the beginning - 
-              there's so much more to come!"
+              there&apos;s so much more to come!&rdquo;
             </p>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
