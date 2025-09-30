@@ -161,7 +161,7 @@ export async function generateQuestions(id: string) {
         }
     }
     if (lesson.questionsGenerated) {
-        redirect(`/lesson/${id}/questions`)
+        redirect(`/lesson/${id}`)
     }
 
     const course = await db.query.courseTable.findFirst({

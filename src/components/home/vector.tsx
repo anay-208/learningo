@@ -77,7 +77,11 @@ const SvgIcon = () => {
           id="filter0_f"
           width="1170.74"
           height="550.775"
-          x="0"
+          x="0" 
+
+   
+
+          
           y="-310.63"
           colorInterpolationFilters="sRGB"
           filterUnits="userSpaceOnUse"
@@ -85,7 +89,7 @@ const SvgIcon = () => {
           <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend
             in="SourceGraphic"
-            in2="BackgroundImageFix"
+            in2="BackgroundImageFix" 
             result="shape"
           />
           <feGaussianBlur

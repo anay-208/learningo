@@ -21,7 +21,7 @@ export default function Completed({id, lessonId}: {id: string; lessonId: string;
         if(isPending || !data) return;
         if(data.success){
             router.refresh();
-            router.push(`/dashboard/${lessonId}`);
+            router.push(`/course/${lessonId}`);
         } else {
             toast("An unknown error occured marking completed, please contact me@anayparaswani.dev");
         }
