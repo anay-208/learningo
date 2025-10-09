@@ -16,12 +16,12 @@ export default function HeroSection() {
 
       <div className="relative z-10 max-w-6xl mx-auto text-center">
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 border border-purple-200/50 dark:border-purple-800/50 mb-8">
+        {/* <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 dark:from-purple-900/30 dark:to-pink-900/30 border border-purple-200/50 dark:border-purple-800/50 mb-8">
           <Sparkles className="w-4 h-4 text-purple-600" />
           <span className="text-sm font-medium text-purple-700 dark:text-purple-300">
             AI-Powered Learning Revolution
           </span>
-        </div>
+        </div> */}
 
         {/* Main heading */}
         {/* Title */}
