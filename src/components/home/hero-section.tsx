@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "@/lib/auth-client";
 import Link from "next/link";
-import { ArrowRight, BookOpen, Zap } from "lucide-react";
+import { ArrowRigh, BookOpen, Zap } from "lucide-react";
 
 export default function HeroSection() {
   const { data, isPending } = useSession();
