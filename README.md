@@ -13,5 +13,3 @@ I Used Next.js, which is a React.js framework to build it. How it works is when 
 ## What's next for Learningo
 
 As of now, the app will remain completely free.
-
-In the future however, things might change a little, incase I exceed my Gemini Free Limit.
