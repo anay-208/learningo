@@ -139,6 +139,10 @@ I Used Next.js, which is a React.js framework to build it. How it works is when 
    
    # Google Gemini AI
    GOOGLE_GENERATIVE_AI_API_KEY="your_gemini_api_key"
+   
+   # Sentry (optional - only needed if you want error tracking)
+   # Leave this unset for local development to prevent sending alerts
+   NEXT_PUBLIC_SENTRY_DSN="your_sentry_dsn_url"
    ```
 4. In the production, Vertex AI is used, which most of the people likely won't use, so feel free to change the [code](src/actions/generate.ts) in your local system to use it 
 
