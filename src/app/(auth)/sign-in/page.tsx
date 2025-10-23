@@ -1,17 +1,49 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription  } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
+import { useRef } from "react";
+
+const emailRegex = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
+  const emailRef = useRef<HTMLInputElement>(null);
+
+  const handleSendingMagicLink = async () => {
+    const email = emailRef.current?.value || "";
+    if (!email) {
+      toast.error("Please enter an email address");
+      return;
+    }
+
+    if(!emailRegex.test(email)) {
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    await signIn.magicLink(
+      {
+        email
+      },
+      {
+        onRequest: () => {
+          setLoading(true);
+        },
+        onResponse: () => {
+          setLoading(false);
+          toast("Magic Link Sent! Please check your email. It might take a few minutes to receive. if you haven't received, please contact me@anayparaswani.dev!")
+        },
+      },
+    );
+    emailRef.current!.value = "";
+  }
 
 
   return (
@@ -47,6 +79,7 @@ export default function SignIn() {
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-base font-medium">Email Address</Label>
                 <Input
+                ref={emailRef}
                   required
                   id="email"
                   type="email"
@@ -61,22 +94,7 @@ export default function SignIn() {
               <Button
                 disabled={loading}
                 className="h-12 text-base font-semibold rounded-xl bg-purple-600 hover:bg-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
-                onClick={async () => {
-                  await signIn.magicLink(
-                    {
-                      email
-                    },
-                    {
-                      onRequest: () => {
-                        setLoading(true);
-                      },
-                      onResponse: () => {
-                        setLoading(false);
-                        toast("Magic Link Sent! Please check your email. It might take a few minutes to receive. if you haven't received, please contact me@anayparaswani.dev!")
-                      },
-                    },
-                  );
-                }}>
+                onClick={async () => await handleSendingMagicLink()}>
                 {loading ? (
                   <Loader2 size={20} className="animate-spin mr-2" />
                 ) : (
@@ -88,7 +106,7 @@ export default function SignIn() {
                   </>
                 )}
               </Button>
-              
+
               <div className="text-center">
                 <p className="text-sm text-muted-foreground">
                   By continuing, you agree to our Terms of Service and Privacy Policy
