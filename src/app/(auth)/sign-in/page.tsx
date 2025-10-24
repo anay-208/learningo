@@ -8,29 +8,28 @@ import { useState } from "react";
 import { Loader2 } from "lucide-react";
 import { signIn } from "@/lib/auth-client";
 import { toast } from "sonner";
-import { useRef } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signInSchema } from "@/types/signin";
 
-const emailRegex = /^((?!\.)[\w-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gim;
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-  const emailRef = useRef<HTMLInputElement>(null);
 
-  const handleSendingMagicLink = async () => {
-    const email = emailRef.current?.value || "";
-    if (!email) {
-      toast.error("Please enter an email address");
-      return;
-    }
+  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    defaultValues: {
+      email: ""
+    },
+    mode: "onChange",
+    resolver: zodResolver(signInSchema)
+  })
 
-    if(!emailRegex.test(email)) {
-      toast.error("Please enter a valid email address");
-      return;
-    }
+  const handleSendingMagicLink = async (data: z.infer<typeof signInSchema>) => {
+
     await signIn.magicLink(
       {
-        email
+        email: data.email
       },
       {
         onRequest: () => {
@@ -42,7 +41,7 @@ export default function SignIn() {
         },
       },
     );
-    emailRef.current!.value = "";
+    reset();
   }
 
 
@@ -76,37 +75,41 @@ export default function SignIn() {
 
           <CardContent>
             <div className="grid gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-base font-medium">Email Address</Label>
-                <Input
-                ref={emailRef}
-                  required
-                  id="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                  }}
-                  className="h-12 text-base rounded-xl border-gray-300 dark:border-gray-600 focus:border-purple-500 focus:ring-purple-500"
-                />
-              </div>
-              <Button
-                disabled={loading}
-                className="h-12 text-base font-semibold rounded-xl bg-purple-600 hover:bg-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
-                onClick={async () => await handleSendingMagicLink()}>
-                {loading ? (
-                  <Loader2 size={20} className="animate-spin mr-2" />
-                ) : (
-                  <>
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 7.89a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    Continue with Magic Link
-                  </>
-                )}
-              </Button>
-
+              <form onSubmit={handleSubmit(handleSendingMagicLink)} className="space-y-3 flex flex-col items-center w-full">
+                <div className="space-y-2 w-full">
+                  <Label htmlFor="email" className="text-base font-medium">Email Address</Label>
+                  <Input
+                    required
+                    id="email"
+                    placeholder="you@example.com"
+                    {...register("email")}
+                    className="h-12 text-base rounded-xl border-gray-300 dark:border-gray-600 focus:border-purple-500 focus:ring-purple-500"
+                  />
+                  {
+                    errors.email && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {errors.email.message}
+                      </p>
+                    )
+                  }
+                </div>
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="h-12 text-base font-semibold rounded-xl bg-purple-600 hover:bg-purple-700 text-white shadow-md hover:shadow-lg transition-all duration-200"
+                >
+                  {loading ? (
+                    <Loader2 size={20} className="animate-spin mr-2" />
+                  ) : (
+                    <>
+                      <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 7.89a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                      </svg>
+                      Continue with Magic Link
+                    </>
+                  )}
+                </Button>
+              </form>
               <div className="text-center">
                 <p className="text-sm text-muted-foreground">
                   By continuing, you agree to our Terms of Service and Privacy Policy
@@ -147,6 +150,6 @@ export default function SignIn() {
           </div>
         </div>
       </div>
-    </main>
+    </main >
   );
 }
